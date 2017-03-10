@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  .row
+    .container-fluid
+      .col-2
+      .col-10
+        table.table-bordered
+          each row in workdirs
+            tr.row
+              td= row
+          
+        
+
+
