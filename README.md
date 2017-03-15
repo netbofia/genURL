@@ -18,6 +18,13 @@ This is used coupled with syncthing to allow serving of files on my laptop on th
 
 Yes I know nextcloud owncloud do this.
 
+--------
+
+## File serving 
+
+File serving will be routed through
+
+[host]/files/[hash]
 
 --------
 
@@ -29,7 +36,7 @@ $ npm install
 $ bower install
 
 #Configure ip and address and start server
-$npm start
+$ npm start
 ```
 
 

@@ -2,50 +2,85 @@ var express = require('express');
 var router = express.Router();
 var exec = require('child_process').exec;
 var Promise = require('bluebird');
+var path = require('path');
+var glob = require('glob');
+var fs=require('fs');
+var Redis = require('ioredis');
+var redis = new Redis(); //Need to set pass and other settings
+var crypto = require('crypto');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	  //exec command and get promise
-  function send(command){
+  var base_path = "/home/brunocosta/Documentos/*";
+  
+  function list(path){
     return new Promise(function(resolve, reject){
-      exec(command, function(error,stdout,stderr){  
+      glob(path,function(err,result){
         //If no stderr furfill promise else send stdr;
-        stderr.length==0 || error===null ? resolve(stdout) : reject({error:error,stderr:stderr});
-        //Implement error....... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        err===null ? resolve(result) : reject(err);
       });
     });  
   }
+  list(base_path).then(function(data){
 
-  command="ls .";
-  send(command).then(function(data){
-    var list={};
-    try{
-      workdirs=data.trim().split(/\r?\n|\r/g);
-      function configParseToJSON(item){
-        item.startsWith('#') ? "" :  config[item.split('=')[0]]=btoa(item.split('=')[1]);  
-      }
-      //workdirs.filter(configParseToJSON);
-
-
-    }catch(exception){ 
-      console.trace(exception);
-      config={};
-    }finally{
-      res.render('index', {workdirs});
+    var dirs=[];
+    var files=[];
+    for( i in data){
+      var base = path.basename(data[i]);
+      fs.lstatSync(data[i]).isDirectory() ? dirs.push(base) : files.push(base);
     }
-  },function(err){
-    //If promise isn't fullfilled issue error but render page. Set config to ""
-    console.error("Error at index.js - "+err.stderr);
-    process.env.LOG>4 ? console.error("Error at index.js - "+err.stderr) : "";
-    var config={};
-    res.render('index', {title: 'error'});
+    res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files});
   });
 
+});
 
+router.post('/ls', function(req, res, next) {
+  var list_path = req.body.path;
+  var up = req.body.up;
 
+  console.log(list_path);
 
-
+  up ? list_path=path.dirname(list_path)+"/*" : list_path=list_path+"/*" ;
   
+  console.log(list_path);
+
+  function list(path){
+    return new Promise(function(resolve, reject){
+      glob(path,function(err,result){
+        //If no stderr furfill promise else send stdr;
+        console.log(result);
+        err===null ? resolve(result) : reject(err);
+      });
+    });  
+  }
+ 
+  list(list_path).then(function(data){
+    var dirs=[];
+    var files=[];
+    for( i in data){
+      var base = path.basename(data[i]);
+      fs.lstatSync(data[i]).isDirectory() ? dirs.push(base) : files.push(base);
+    }
+    res.json({origin:path.dirname(list_path),dirs,files});
+  });
+ 
+});
+
+router.post('/share', function(req,res,next){
+  //Vulnerable any body can send to the server. Must request rotating api key (Time based).
+  //receives that absolute path. Sends the link
+
+  var file_path=req.body.path
+  var auth=req.body.auth; //No used yet.
+  auth="1q2222222342we3we";  //ATTENTION ! To change, drastically.
+  if( auth=== "1q2222222342we3we" ){
+    var hash=crypto.createHash('md5').update(file_path).digest('hex')  
+    redis.set(hash,file_path);
+    res.json({link:req.headers.host+"/files/"+hash})
+  }else{
+    res.render('503');
+  }
+
 });
 
 module.exports = router;
