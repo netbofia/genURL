@@ -17,3 +17,19 @@ Basically Dropbox or Google Drive for your server. So you don't need to have fil
 This is used coupled with syncthing to allow serving of files on my laptop on the go.
 
 Yes I know nextcloud owncloud do this.
+
+
+--------
+
+## Installation 
+
+```shell
+$ npm i grunt-cli -g
+$ npm install
+$ bower install
+
+#Configure ip and address and start server
+$npm start
+```
+
+
