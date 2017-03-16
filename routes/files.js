@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Redis = require('ioredis');
-var redis = new Redis();
+var redis = new Redis({password: process.env.REDISPASSWORD});
 
 /* GET users listing. */
 router.get('/:hash*', function(req, res, next) {

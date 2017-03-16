@@ -6,7 +6,7 @@ var path = require('path');
 var glob = require('glob');
 var fs=require('fs');
 var Redis = require('ioredis');
-var redis = new Redis(); //Need to set pass and other settings
+var redis = new Redis({password: process.env.REDISPASSWORD}); //Need to set pass and other settings
 var crypto = require('crypto');
 
 /* GET home page. */

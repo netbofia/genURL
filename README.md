@@ -36,7 +36,7 @@ $ npm install
 $ bower install
 
 #Configure ip and address and start server
-$ npm start
+$ REDISPASS=password npm start
 ```
 
 
