@@ -1,6 +1,8 @@
 $(document).ready(function(){
   //Must deal with resizing This becomes fixed for the session
 
+  var loadingWidth=$('body').width();
+  $('body').prepend("<div><p>"+loadingWidth+"</p></div>");
   $('button').on('click',function(){
     $(this).attr('path');
     path=$(this).attr('path');
@@ -27,7 +29,7 @@ $(document).ready(function(){
   })
   function rows(){
     //Set for rows dirs only
-    $('table td.folder').on('dblclick',function(){
+    $('table td.folder').on('click',function(){
 
       path=$(this).attr('path');
       $.ajax({

@@ -26,14 +26,22 @@ File serving will be routed through
 
 [host]/files/[hash]
 
+curl -d "path=/home/brunocosta/Documentos/[PipeLine]PmiRExAt: plant miRNA expression atlas database and web applications.pdf" localhost:3000/share
+
+
 --------
 
 ## Installation 
 
 ```shell
 $ npm i grunt-cli -g
+$ npm i bower -g
 $ npm install
 $ bower install
+$ grunt (Might have to run it twice)
+
+$ sudo apt-get update
+$ sudo apt-get install redis-server
 
 #Configure ip and address and start server
 $ REDISPASS=password npm start
