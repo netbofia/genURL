@@ -42,8 +42,8 @@ router.post('/ls', function(req, res, next) {
 
   up ? list_path=path.dirname(list_path)+"/*" : list_path=list_path+"/*" ;
   
-  console.log(list_path);
-
+  
+  
   function list(path){
     return new Promise(function(resolve, reject){
       glob(path,function(err,result){
