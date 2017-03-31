@@ -16,7 +16,8 @@ var keys = new Keygrip(keylist,'sha256','hex')
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var cookies = new Cookies( req, res, { "keys": keys } ), unsigned, signed, tampered;
-  cookies.set( "unsigned", "foo").set( "signedCookie", "bar", { signed: true } );  
+  var token="qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah";
+  //cookies.set( "access", "qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah").set( "apikey", token, { signed: true } );  
 
   unsigned = cookies.get( "unsigned" )
   signed = cookies.get( "signed", { signed: true } )
@@ -25,9 +26,10 @@ router.get('/', function(req, res, next) {
 
   var base_path = "/home/brunocosta/Documentos/*";
     // Cookies that have not been signed
-  console.log('Cookies: ', req.cookies)
+  
+  
   // Cookies that have been signed
-  console.log('Signed Cookies: ', req.signedCookies)
+  
 
 
   function list(path){
@@ -46,7 +48,7 @@ router.get('/', function(req, res, next) {
       var base = path.basename(data[i]);
       fs.lstatSync(data[i]).isDirectory() ? dirs.push(base) : files.push(base);
     }
-    res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files});
+    req.cookies.apikey==token ? res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files}) : res.send(404);
   });
 
 });
@@ -78,7 +80,7 @@ router.post('/ls', function(req, res, next) {
       var base = path.basename(data[i]);
       fs.lstatSync(data[i]).isDirectory() ? dirs.push(base) : files.push(base);
     }
-    res.json({origin:path.dirname(list_path),dirs,files});
+    res.json({origin:path.dirname(list_path),dirs,files})
   });
  
 });
