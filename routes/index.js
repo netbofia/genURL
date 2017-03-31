@@ -8,11 +8,28 @@ var fs=require('fs');
 var Redis = require('ioredis');
 var redis = new Redis({password: process.env.REDISPASSWORD}); //Need to set pass and other settings
 var crypto = require('crypto');
+var Cookies = require('cookies');
+var Keygrip = require("keygrip");
+var keylist=["SEKRIT2", "SEKRIT1"];
+var keys = new Keygrip(keylist,'sha256','hex')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  var cookies = new Cookies( req, res, { "keys": keys } ), unsigned, signed, tampered;
+  cookies.set( "unsigned", "foo").set( "signedCookie", "bar", { signed: true } );  
+
+  unsigned = cookies.get( "unsigned" )
+  signed = cookies.get( "signed", { signed: true } )
+  tampered = cookies.get( "tampered", { signed: true } )
+
+
   var base_path = "/home/brunocosta/Documentos/*";
-  
+    // Cookies that have not been signed
+  console.log('Cookies: ', req.cookies)
+  // Cookies that have been signed
+  console.log('Signed Cookies: ', req.signedCookies)
+
+
   function list(path){
     return new Promise(function(resolve, reject){
       glob(path,function(err,result){
