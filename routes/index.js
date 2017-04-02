@@ -12,11 +12,11 @@ var Cookies = require('cookies');
 var Keygrip = require("keygrip");
 var keylist=["SEKRIT2", "SEKRIT1"];
 var keys = new Keygrip(keylist,'sha256','hex')
+var token="qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah";
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var cookies = new Cookies( req, res, { "keys": keys } ), unsigned, signed, tampered;
-  var token="qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah";
   //cookies.set( "access", "qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah").set( "apikey", token, { signed: true } );  
 
   unsigned = cookies.get( "unsigned" )
@@ -25,12 +25,6 @@ router.get('/', function(req, res, next) {
 
 
   var base_path = "/home/brunocosta/Documentos/*";
-    // Cookies that have not been signed
-  
-  
-  // Cookies that have been signed
-  
-
 
   function list(path){
     return new Promise(function(resolve, reject){
@@ -45,10 +39,12 @@ router.get('/', function(req, res, next) {
     var dirs=[];
     var files=[];
     for( i in data){
+      //Get oath base name
       var base = path.basename(data[i]);
+      //Check weather path is dir or file
       fs.lstatSync(data[i]).isDirectory() ? dirs.push(base) : files.push(base);
     }
-    req.cookies.apikey==token ? res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files}) : res.send(404);
+    req.cookies.apikey==token ? res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files}) : res.sendStatus(404);
   });
 
 });
@@ -100,6 +96,33 @@ router.post('/share', function(req,res,next){
     res.render('503');
   }
 
+});
+
+router.get('/permissions', function(req, res, next) {
+  var cookies = new Cookies( req, res, { "keys": keys } ), unsigned, signed, tampered;
+  //cookies.set( "access", "qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah").set( "apikey", token, { signed: true } );  
+
+  unsigned = cookies.get( "unsigned" )
+  signed = cookies.get( "signed", { signed: true } )
+  tampered = cookies.get( "tampered", { signed: true } )
+
+  /* GET users listing. */
+
+  redis.keys("*").then(function(hashList){
+    redis.mget(hashList).then(function(hashValues){
+      var files={};
+      for(i in hashValues){
+        files[hashList[i]]=path.basename(hashValues[i]);
+      }
+      req.cookies.apikey==token ? res.render('permissions', {files} ) : res.sendStatus(504);
+    });
+
+
+  
+
+
+    //res.download(result);
+  })
 });
 
 module.exports = router;

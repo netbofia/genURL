@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  .container-fluid
+    .row
+      .col-2
+      .col-8.directory
+        button.btn-primary.upDir(path=origin) Parent directory
+        table.table.table-hover(style="width:100%")
+          thead
+            tr
+              th(style="text-align: center;") Hash
+              th(style="text-align: center;") File 
+              th(style="text-align: center;") actions
+          tbody
+          each val, index in files
+            tr
+              td.hash(scope="row")
+                img.float-left(style="width:25px;margin:10px",src="/images/folder.png")
+                p.float-left(style="margin:10px;")= index
+              td.file
+                input.form-control(style="width:100%;margin:10px;",value=val)
+              td.actions
+                  img.float-left(style="width:25px;margin:10px",src="/images/file.png")
+                  img.shareFile.float-right(style="width:25px;margin:10px;",src="/images/share.png")
+            
+      .col-2    
+        
+
+
