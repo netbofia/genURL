@@ -81,5 +81,28 @@ $(document).ready(function(){
     })
   }
   share();
+  $("table.permissionsTable .actions img.removeShare").on('click',function(){
+   var that=$(this);
+   var alert=$('tr.alertRemove').clone().show();
+   that.closest('tr').prev('tr').show();
+  })
+  $("tr.alertRemove .btn.yes").on('click',function(){
+   var that = $(this); 
+   var hash=$(this).closest('tr').next("tr").children('td.hash').contents('p.hash').text()  
+   $.ajax({
+    url: "/delete",
+    type: 'POST',
+    that:that,
+    contentType: 'application/json',
+    data: JSON.stringify({hash:hash}),
+    success: function(data,textStatus,jqXHR){
+      var that = this.that;
+      that.closest('tr').empty();
+      that.closest('tr').next('tr').empty();
+      }
+    });
+    
+  })
+
 
 })

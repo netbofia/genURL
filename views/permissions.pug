@@ -7,8 +7,7 @@ block content
     .row
       .col-2
       .col-8.directory
-        button.btn-primary.upDir(path=origin) Parent directory
-        table.table.table-hover(style="width:100%")
+        table.permissionsTable.table.table-hover(style="width:100%")
           thead
             tr
               th(style="text-align: center;") Hash
@@ -16,17 +15,40 @@ block content
               th(style="text-align: center;") actions
           tbody
           each val, index in files
+            tr.alertRemove(style="display:none;")   
+              td(colspan=3)
+                .alert.remove.alert-warning.alert-dismissible.fade.show(role="alert")
+                  button.close(type="button",data-dismiss="alert",aria-label="Close")
+                    span(aria-hidden="true") &times;
+                  strong Stop sharing file?
+                  | Are you sure you want to remove sharing permissions to this link?
+                  button.yes.btn Yes
+                  button.no.btn No          
             tr
               td.hash(scope="row")
                 img.float-left(style="width:25px;margin:10px",src="/images/folder.png")
-                p.float-left(style="margin:10px;")= index
+                p.hash.float-left(style="margin:10px;")=index
               td.file
                 input.form-control(style="width:100%;margin:10px;",value=val)
               td.actions
                   img.float-left(style="width:25px;margin:10px",src="/images/file.png")
-                  img.shareFile.float-right(style="width:25px;margin:10px;",src="/images/share.png")
+                  img.shareFile.float-left(style="width:25px;margin:10px;",src="/images/share.png")
+                  img.removeShare.float-left(title="Stop sharing",style="width:25px;margin:10px;",src="/images/delete.png")
+
             
       .col-2    
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -93,7 +93,7 @@ router.post('/share', function(req,res,next){
     redis.set(hash,file_path);
     res.json({link:req.headers.host+"/files/"+hash})
   }else{
-    res.render('503');
+    res.render('404');
   }
 
 });
@@ -116,13 +116,16 @@ router.get('/permissions', function(req, res, next) {
       }
       req.cookies.apikey==token ? res.render('permissions', {files} ) : res.sendStatus(504);
     });
-
-
-  
-
-
     //res.download(result);
   })
 });
+
+
+router.post('/delete',function(req, res, next){
+  var hash=req.body.hash
+  redis.del(hash);
+  res.sendStatus(200);
+})
+
 
 module.exports = router;
