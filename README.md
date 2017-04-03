@@ -8,7 +8,7 @@ Sorry not must time to detail this project.
 
 But in short this has the purpose of allowing to serve a directory and its children directories so you can see via web browser what is on your server. And enable sharing of certain files directly from your server via http.
 
-The files are hashed in md5 and added to redis server.
+The files paths are hashed in md5 and added to redis server.
 The hash is the key the absolute path is the value. An expiration will be set.
 The web server will serve files for which there exists a hash key in the redis server.
 
@@ -26,8 +26,16 @@ File serving will be routed through
 
 [host]/files/[hash]
 
-curl -d "path=/home/brunocosta/Documentos/[PipeLine]PmiRExAt: plant miRNA expression atlas database and web applications.pdf" localhost:3000/share
-
+transfer() { 
+  if [[ $1 == *"Include"* ]]; then
+      remotePath="prefix/to/folders/"$1;
+    curl -s --data "path=$remotePath" https://server/share | awk -F ":" '{print $2}' | tr -d "}\"" | xargs -n 1 -I pat echo "https://"pat;
+    #Send hash via ssh
+    #hash=$(echo -n "/prefix/to/folder/"$1 | md5sum | awk '{print $1}';);
+    #ssh server redis-cli set $hash $path
+  fi 
+}
+alias transfer=transfer();
 
 --------
 

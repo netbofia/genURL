@@ -3,7 +3,7 @@ $(document).ready(function(){
 
   var loadingWidth=$('body').width();
   $('body').prepend("<div><p>"+loadingWidth+"</p></div>");
-  $('button').on('click',function(){
+  $('button.upDir').on('click',function(){
     $(this).attr('path');
     path=$(this).attr('path');
     $.ajax({
@@ -13,6 +13,7 @@ $(document).ready(function(){
       data: JSON.stringify({path:path,up:true}),
       success: function(data,textStatus,jqXHR){
         console.log(data);
+        //Bad practise.
         $('button.upDir').attr('path',data.origin);
         $('table tr').empty();
         for( row in data.dirs){
