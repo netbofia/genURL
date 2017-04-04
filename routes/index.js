@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
   tampered = cookies.get( "tampered", { signed: true } )
 
 
-  var base_path = "/home/brunocosta/Documentos/*";
+  var base_path =  process.env.BASEPATH || "/home/brunocosta/Documentos/*";
 
   function list(path){
     return new Promise(function(resolve, reject){
