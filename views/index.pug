@@ -9,7 +9,7 @@ block content
       .col-8.directory
         button.btn-primary.upDir.float-left(path=origin) Parent directory
         each item in nav
-          button.btn-secondary.float-left.nav=item
+          button.btn-secondary.float-left.nav(path=navPaths[item])=item
 
         table.table.table-hover(style="width:100%")
           tbody

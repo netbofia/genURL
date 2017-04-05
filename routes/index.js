@@ -27,7 +27,7 @@ router.get('/', function(req, res, next) {
   var base_path =  process.env.BASEPATH || "/home/brunocosta/Documentos/*";
   var nav = base_path.replace("*","").replace(/^\//,"").replace(/\/$/,"").split("/")
   var navPaths = {}
-  var tempPath;
+  var tempPath="";
   for(i in nav){
     tempPath+="/"+nav[i];
     navPaths[nav[i]]=tempPath;
