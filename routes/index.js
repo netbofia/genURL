@@ -25,7 +25,13 @@ router.get('/', function(req, res, next) {
 
 
   var base_path =  process.env.BASEPATH || "/home/brunocosta/Documentos/*";
-
+  var nav = base_path.replace("*","").replace(/^\//,"").replace(/\/$/,"").split("/")
+  var navPaths = {}
+  var tempPath;
+  for(i in nav){
+    tempPath+="/"+nav[i];
+    navPaths[nav[i]]=tempPath;
+  } 
   function list(path){
     return new Promise(function(resolve, reject){
       glob(path,function(err,result){
@@ -44,7 +50,7 @@ router.get('/', function(req, res, next) {
       //Check weather path is dir or file
       fs.lstatSync(data[i]).isDirectory() ? dirs.push(base) : files.push(base);
     }
-    req.cookies.apikey==token ? res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files}) : res.sendStatus(404);
+    req.cookies.apikey==token ? res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files,nav,navPaths}) : res.sendStatus(404);
   });
 
 });

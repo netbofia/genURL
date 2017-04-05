@@ -7,23 +7,26 @@ block content
     .row
       .col-2
       .col-8.directory
-        button.btn-primary.upDir(path=origin) Parent directory
+        button.btn-primary.upDir.float-left(path=origin) Parent directory
+        each item in nav
+          button.btn-secondary.float-left.nav=item
+
         table.table.table-hover(style="width:100%")
           tbody
-            each row in dirs
-              tr.row
-                - path=origin+"/"+row
-                td.folder(style="width:100%",path=path)
-                  img.float-left(style="width:25px;margin:10px",src="/images/folder.png")
-                  p.float-left(style="margin:10px;")= row
-            each row in files
-              tr.row
-                - path=origin+"/"+row
-                td.file(style="width:100%",path=path)
-                  img.float-left(style="width:25px;margin:10px",src="/images/file.png")
-                  p.float-left(style="margin:10px;")= row
-                  img.shareFile.float-right(style="width:25px;margin:10px;",src="/images/share.png")
-              
+          each row in dirs
+            tr.row
+              - path=origin+"/"+row
+              td.folder(style="width:100%",path=path)
+                img.float-left(style="width:25px;margin:10px",src="/images/folder.png")
+                p.float-left(style="margin:10px;")= row
+          each row in files
+            tr.row
+              - path=origin+"/"+row
+              td.file(style="width:100%",path=path)
+                img.float-left(style="width:25px;margin:10px",src="/images/file.png")
+                p.float-left(style="margin:10px;")= row
+                img.shareFile.float-right(style="width:25px;margin:10px;",src="/images/share.png")
+            
       .col-2    
         
 

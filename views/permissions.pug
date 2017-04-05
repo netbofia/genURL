@@ -22,8 +22,10 @@ block content
                     span(aria-hidden="true") &times;
                   strong Stop sharing file?
                   | Are you sure you want to remove sharing permissions to this link?
-                  button.yes.btn Yes
-                  button.no.btn No          
+                  button.btn-primary.no.btn.float-right(type="button",style="margin:-7px;")
+                    span(style="padding:10px;") No          
+                  button.btn-primary.yes.btn.float-right(type="button",style="margin:-7px;")
+                    span(style="padding:10px;") Yes
             tr
               td.hash(scope="row")
                 img.float-left(style="width:25px;margin:10px",src="/images/folder.png")
@@ -33,6 +35,7 @@ block content
               td.actions
                   img.float-left(style="width:25px;margin:10px",src="/images/file.png")
                   img.shareFile.float-left(style="width:25px;margin:10px;",src="/images/share.png")
+                  img.removeShare.float-left(title="Download file",style="width:25px;margin:10px;",src="/images/download.png")  
                   img.removeShare.float-left(title="Stop sharing",style="width:25px;margin:10px;",src="/images/delete.png")
 
             

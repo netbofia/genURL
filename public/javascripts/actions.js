@@ -24,6 +24,7 @@ $(document).ready(function(){
           var tr='<tr class="row"><td class="file" style="width:100%;"><img class="float-left" style="width:25px;margin:10px;" src="/images/file.png"><p class="float-left" style="margin:10px;">'+data.files[row]+'</p></td></tr>';
           $('table tbody').append(tr);
         }
+        $('button.nav:last()').remove();
         rows();
       }
     });
@@ -98,8 +99,8 @@ $(document).ready(function(){
     data: JSON.stringify({hash:hash}),
     success: function(data,textStatus,jqXHR){
       var that = this.that;
-      that.closest('tr').empty();
-      that.closest('tr').next('tr').empty();
+      that.closest('tr').remove();
+      that.closest('tr').next('tr').remove();
       }
     });
     
