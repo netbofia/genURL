@@ -4,3 +4,8 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-47286927-1', 'auto');
 ga('send', 'pageview');
+
+(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: "ca-pub-8729432027149164",
+  enable_page_level_ads: true
+});
