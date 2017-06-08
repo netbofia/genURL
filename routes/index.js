@@ -16,6 +16,10 @@ var token="qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah";
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  if req.headers.host=="obanheiro.pt" {
+    res.render("Website O banheiro in construction")
+  }
+
   var cookies = new Cookies( req, res, { "keys": keys } ), unsigned, signed, tampered;
   //cookies.set( "access", "qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah").set( "apikey", token, { signed: true } );  
 
