@@ -18,45 +18,45 @@ var token="qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah";
 router.get('/', function(req, res, next) {
   if (req.headers.host=="obanheiro.pt" || req.headers.host=="www.obanheiro.pt" ) {
     res.render('obanheiro');
-  }
+    }else{
 
-  var cookies = new Cookies( req, res, { "keys": keys } ), unsigned, signed, tampered;
-  //cookies.set( "access", "qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah").set( "apikey", token, { signed: true, maxAge: (1000 * 60 * 60 * 30 * 12) } );  
+    var cookies = new Cookies( req, res, { "keys": keys } ), unsigned, signed, tampered;
+    //cookies.set( "access", "qawsaffsfkjahf3728fh93qo38gfwqig3qq82gdq93yd9wqd39qdxeaiwhah").set( "apikey", token, { signed: true, maxAge: (1000 * 60 * 60 * 30 * 12) } );  
 
-  unsigned = cookies.get( "unsigned" )
-  signed = cookies.get( "signed", { signed: true } )
-  tampered = cookies.get( "tampered", { signed: true } )
+    unsigned = cookies.get( "unsigned" )
+    signed = cookies.get( "signed", { signed: true } )
+    tampered = cookies.get( "tampered", { signed: true } )
 
 
-  var base_path =  process.env.BASEPATH || "/home/brunocosta/Documentos/*";
-  var nav = base_path.replace("*","").replace(/^\//,"").replace(/\/$/,"").split("/")
-  var navPaths = {}
-  var tempPath="";
-  for(i in nav){
-    tempPath+="/"+nav[i];
-    navPaths[nav[i]]=tempPath;
-  } 
-  function list(path){
-    return new Promise(function(resolve, reject){
-      glob(path,function(err,result){
-        //If no stderr furfill promise else send stdr;
-        err===null ? resolve(result) : reject(err);
-      });
-    });  
-  }
-  list(base_path).then(function(data){
-
-    var dirs=[];
-    var files=[];
-    for( i in data){
-      //Get oath base name
-      var base = path.basename(data[i]);
-      //Check weather path is dir or file
-      fs.lstatSync(data[i]).isDirectory() ? dirs.push(base) : files.push(base);
+    var base_path =  process.env.BASEPATH || "/home/brunocosta/Documentos/*";
+    var nav = base_path.replace("*","").replace(/^\//,"").replace(/\/$/,"").split("/")
+    var navPaths = {}
+    var tempPath="";
+    for(i in nav){
+      tempPath+="/"+nav[i];
+      navPaths[nav[i]]=tempPath;
+    } 
+    function list(path){
+      return new Promise(function(resolve, reject){
+        glob(path,function(err,result){
+          //If no stderr furfill promise else send stdr;
+          err===null ? resolve(result) : reject(err);
+        });
+      });  
     }
-    req.cookies.apikey==token ? res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files,nav,navPaths}) : res.sendStatus(404);
-  });
+    list(base_path).then(function(data){
 
+      var dirs=[];
+      var files=[];
+      for( i in data){
+        //Get oath base name
+        var base = path.basename(data[i]);
+        //Check weather path is dir or file
+        fs.lstatSync(data[i]).isDirectory() ? dirs.push(base) : files.push(base);
+      }
+      req.cookies.apikey==token ? res.render('index', {title:"genURL",origin:path.dirname(base_path),dirs,files,nav,navPaths}) : res.sendStatus(404);
+    });
+  }
 });
 
 router.post('/ls', function(req, res, next) {
