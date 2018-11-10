@@ -4,7 +4,7 @@ Web-based File system visualization. Url generation to access or give access to 
 
 ## Basic idea
 
-Sorry not must time to detail this project. 
+Sorry not much time to detail this project. 
 
 But in short this has the purpose of allowing to serve a directory and its children directories so you can see via web browser what is on your server. And enable sharing of certain files directly from your server via http.
 
